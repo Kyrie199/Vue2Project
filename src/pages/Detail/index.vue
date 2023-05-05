@@ -373,8 +373,12 @@
           this.skuNum = parseInt(value);
         }
       },
-      addShopCart(){
-        this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+      async addShopCart(){
+        try {
+          await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+        }catch (error){
+          alert(error.message)
+        }
       }
     }
   }
