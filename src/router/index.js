@@ -7,6 +7,8 @@ import Search from '../pages/Search'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Detail from '../pages/Detail'
+import AddCartSuccess from '../pages/AddCartSuccess'
+import ShopCart from '../pages/ShopCart'
 
 Vue.use(VueRouter)
 
@@ -24,6 +26,22 @@ VueRouter.prototype.push = function (location,resolve,reject){
 
 export default new VueRouter({
     routes:[
+        {
+            path:'/shopcart',
+            name:'shopcart',
+            component:ShopCart,
+            meta:{
+                footerShow:true
+            }
+        },
+        {
+            path:'/addcartsuccess',
+            name:'addcartsuccess',
+            component:AddCartSuccess,
+            meta:{
+                footerShow:true
+            }
+        },
         {
             path:'/detail/:skuid',
             component:Detail,

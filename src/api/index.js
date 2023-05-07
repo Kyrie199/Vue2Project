@@ -21,3 +21,9 @@ export const reqCategoryList = () =>
 
     //添加修改购物车请求
     export const reqAddOrUpdateShopCart = (skuId, skuNum ) => requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:"post"})
+
+    //获取购物车列表数据接口
+    export const reqCartList = () => requests({url:'/cart/cartList',method:"get"})
+
+    //删除购物车产品的接口
+    export const reqDeleteCartById = (skuId) => requests({url:`/cart/deleteCart/${skuId}`,method:"delete"})
