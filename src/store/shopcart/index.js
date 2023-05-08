@@ -1,4 +1,4 @@
-import { reqCartList,reqDeleteCartById } from "@/api";
+import { reqCartList,reqDeleteCartById,reqUpdateCheckedById } from "@/api";
 
 const state = {
     cartList:[]
@@ -24,6 +24,17 @@ const actions = {
         }else {
             return  Promise.reject(new Error('faile'));
         }
+    },
+    //修改购物车某一个商品选中的状态
+    async updateCheckedBuId({commit},{skuId,isChecked}){
+        let result = await reqUpdateCheckedById(skuId,isChecked)
+    },
+    deleteAllCheckedCart({dispatch,getters}){
+        getters.cartList.cartInfoList.forEach(item =>{
+            let promise = item.isChecked == 1 ? dispatch('deleteCartListById',) : "";
+            PromiseAll.push(promise);
+        });
+        return Promise.all(PromiseAll);
     }
 };
 const getters = {

@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(cart,index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1">
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1" @change="updateChecked(cart,$event)">
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl">
@@ -44,7 +44,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a @click="deleteAllCheckedCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -76,29 +76,26 @@
       getData(){
         this.$store.dispatch('getCartList')
       },
-      changeBG:throttle(function (index){
-        this.currentIndex = index;
-      },50),
-      async handler(type,disNum,cart){
+      handler:throttle(async function (type,disNum,cart){
         switch(type){
           case 'add':
             //带给服务器变化的量
-              disNum = 1;
-              break;
+            disNum = 1;
+            break;
           case 'mins':
             // if(cart.skuNum > 1){
             //   disNum = -1
             // }else{
             //   disNum = 0;
             // }
-              disNum:cart.skuNum>1?disNum = -1 : disNum = 0
+            disNum:cart.skuNum>1?disNum = -1 : disNum = 0
             break;
-              case 'change':
-                if (isNaN(disNum) || disNum < 1){
-                  disNum = 0;
-                }else{
-                  disNum = parseInt(disNum) - cart.skuNum;
-                }
+          case 'change':
+            if (isNaN(disNum) || disNum < 1){
+              disNum = 0;
+            }else{
+              disNum = parseInt(disNum) - cart.skuNum;
+            }
         }
 
         try {
@@ -107,8 +104,7 @@
         }catch (error){
 
         }
-
-      },
+      },1500),
       //删除某一个商品的操作
       async delectCartById(cart){
         try {
@@ -117,6 +113,19 @@
         }catch (error){
           alert(error.message)
         }
+      },
+      //修改某一个产品的勾选状态
+      async updateChecked(cart,event){
+        try {
+          let checked = event.target.checked ? "1" : "0";
+          await this.$store.dispatch('updateCheckedBuId',{skuId:cart.skuId,isChecked:checked});
+          this.getData();
+        }catch (error){
+          alert(error.message)
+        }
+      },
+      async deleteAllCheckedCart(){
+        await this.$store.dispatch('deleteAllCheckedCart');
       }
     },
     computed:{
